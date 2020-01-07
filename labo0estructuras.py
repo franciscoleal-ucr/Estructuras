@@ -25,7 +25,7 @@ def leerarchivo():
 def pedircadena():
     leerarchivo()
     from textwrap import wrap #lib para separar strings
-    cadena=input("Ingrese la cadena ARN:     ")
+    cadena=input("Ingrese la cadena ARN: ")
     cantidadtripletas= int(len(cadena)/3) #nos dice el tamano del vector de tripletas a generar
     for i in cadena:
       trip=  wrap(cadena, 3) #esto me almacena tripletas x cada casilla del vector
