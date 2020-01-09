@@ -1,3 +1,13 @@
+/**  @brief Implementacion de codigo generador de aminoacidos a partir de codones de codigo genetico (ARN).
+ * 
+ * 
+ * 
+ *   El codigo busca comparar lo ingresado respecto a un archivo que contiene las asociaciones de tripletas a aminoacido
+ *   con el objetivo de brindarle al usuario la conversion rapida de codones de codigo genetico al aminoacido.
+ *   @author Francisco Leal Tovar, Miguel Chaves Bejarano, Rolando Murillo Pérez
+ *   @date Miercoles 8 de Enero del 2020
+*/
+
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -17,6 +27,19 @@ vector<string> vectoraminoacidos; //creamos un vector para los aminoacidos
 //
 
 void leer(){
+	/** El metodo leer() basicamente lo que hara es abrir el archivo datos.csv con la finalidad de poder obtener las dos columnas
+	 * en dos vectores independientes listos para proximamente ser utilizados para la comparacion.
+	 * 
+	 *  @param archivoEntrada Sirve como lugar para abrir el archivodatos.csv
+	 *  @param texto Es un string en donde se contiene todo el archivo datos.csv, pero no en el orden deseado
+	 *  @param letra Es un string creado para almacenar las tripletas, se le reescribe para almacenar la siguiente tripleta
+	 *  @param vectortripletas Es un vector al que se le ingresa una por una cada tripleta, contiene todas las 64 tripletas del archivo de la primera columna.
+	 *  @param amino Es un string que nos sirve para ingresar los aminoacidos, se le reescribe para almacenar el siguiente aminoacido
+	 *  @param vectoraminoacidos Es un vector que recolecta lo obtenido en la variable amino, resultando finalmente por tener en sus casillas todas los 64 aminoacidos asociables en el mismo orden que en el vectortripletas
+	 * 
+	 * 
+	 */
+	
 	string texto;
 	ifstream archivoEntrada("datos.csv", ios::in);//abriendo el archivo le damos "archivoEntrada" como nombre
 	if(!archivoEntrada){//prueba para abrir el archivo
@@ -25,7 +48,7 @@ void leer(){
 	}
 
 	
-	int contador=0;
+	
     while(!archivoEntrada.eof()){//while end of file does't come, do
 		getline(archivoEntrada, texto);//texto resulta ser un vector!!!!!!!
 		//es un vector de 5 componentes texto[0] posee curiosamente la primera letra de todas las tripletas
@@ -66,16 +89,27 @@ void leer(){
 		//                                      al fin!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		//                     se logro tener ambas columnas del archivo en 2 vectores independientes
 		
-		
-		
-
-	    contador=contador+1;
 		}
 		
 	archivoEntrada.close();//siempre luego de abrir el archivo hay que cerrarlo
 	}
 	
 void comparacion(){
+		/** El metodo comparacion() lo que hara es solicitar la cadena de codones de codigo genetico al usuario
+		 *  luego esta cadena va a ser separada en tripletas, para luego compararlas respecto a las tripletas 
+		 *  ya contenidas dentro del vectortripletas y de encontrar match asociar el correspondiente aminoacido,
+		 *  contenido en el vectoraminoacidos e imprimir el aminoacido asociado a la cantidad de tripletas existentes.
+	 * 
+	 *  @param cadena Es un string que almacena la cadena de codones ingresada por el usuario.
+	 *  @param cantidadtripletas Es un int que almacena el numero de tripletas que la cadena contiene.
+	 *  @param vectorcodones Es un vector de string cuya funcion es almacena en tripletas la cadena ingresada
+	 *  @param contador Es un int que sirve para contar el llenado de 3 caracteres, luego se reinicia para contar otros 3 caracteres y asi hasta recorrer la cadena.
+	 *  @param cantidadcaracteresdecadena Es un int que sirve para delimitar el for, saber hasta donde recorro la cadena ingresada
+	 *  @param tripleta Es un string que para almacenar una tripleta, luego es reescrita para contener otra tripleta y asi sucesivamente hasta ser rellenada por la ultima tripleta
+	 * 
+	 * 
+	 */
+	 
 	leer();
 	//ya tengo los datos ahora voy a pedir la cadena de codones
 	//la voy a dividir en tripletas
@@ -90,10 +124,9 @@ void comparacion(){
     //hagamos un pequeño for para almacenar de tres en tres la cadena recibida
     vector<string> vectorcodones;
 
-    int celda=0;
+  
     int contador=0;
     int cantidadcaracteresdecadena= cadena.size();
-    
     string tripleta;
     for(int i=0; i<cantidadcaracteresdecadena; i++){
 		if(contador<3){
@@ -107,25 +140,33 @@ void comparacion(){
 		vectorcodones.push_back(tripleta);
 		tripleta="";
 		tripleta+=cadena[i];
-		//cout << vectorcodones[celda] << "\n";
+		//cout << vectorcodones[celda] << "\n"; 
 		contador=0;
-		celda=celda+1;
+		
+		
 		
 		}
 		
 	contador=contador+1;	
 	}//listo ya tengo la cadena de codonoes almacenada en tripletas dentro del vector "vectorcodones"
 	
+	
+	
+	
 	//vamos a empezar a comparar
-	cout << "la cadena de aminoacidos es: ";
+	cout << "la cadena de aminoacidos es: " << "\n";
 	for(int i=0; i<cantidadtripletas; i++){
 		for(int j=0; j<64; j++){
 			if(vectorcodones[i]==vectortripletas[j]){
-				cout << vectoraminoacidos[j];
+				cout <<vectoraminoacidos[j];
 				
 				}
 			}
-		} 
+		}
+	
+   
+	
+	 
      cout<<"\n";
 	
 	}
@@ -133,6 +174,12 @@ void comparacion(){
 
 int main () //el codigo busca compilar y ejecutar siempre lo que sea que tenga main()
 {
+	/** main() es el metodo que ejecuta el codigo, por eso internamente ejecutara el metodo de comparacion() que a su vez llama 
+	 *  a penas iniciando a el metodo leer()
+	 * 
+	 *  @param return 0 para asegurarle al codigo la finalizacion efectiva de la ejecucion del metodo.
+	 * 
+	 */
     comparacion();
     return 0;
 }
